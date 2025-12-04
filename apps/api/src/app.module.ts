@@ -84,17 +84,27 @@ import { acRules } from './app.acl';
         services: {
           mailerService: {
             sendMail: (options: EmailSendOptionsInterface) => {
-              console.log('📧 Email would be sent:', {
+              console.log('Email would be sent:', {
                 to: options.to,
                 subject: options.subject,
               });
+              console.log(options);
               return Promise.resolve();
             },
           },
         },
 
         // Email and OTP settings loaded from config
-        settings: authSettings,
+        // Type assertion needed because we omit 'type' from otp in our interface
+        // but the module requires it, so we add a default value
+        settings: {
+          ...authSettings,
+          otp: {
+            ...authSettings.otp,
+            // TODO: this is set by default on sdk, if you change nothing will happens
+            type: 'uuid', // Default type value
+          },
+        },
       }),
       userCrud: {
         imports: [TypeOrmModule.forFeature([UserEntity, UserMetadataEntity])],
@@ -152,7 +162,7 @@ import { acRules } from './app.acl';
           createDto: UserMetadataCreateDto,
           updateDto: UserMetadataUpdateDto,
         },
-        enableGlobalGuard: rocketSettings.enableGlobalGuard,
+        enableGlobalGuard: true,
       }),
     }),
   ],

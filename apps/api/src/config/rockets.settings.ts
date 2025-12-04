@@ -6,7 +6,6 @@ export const rocketsSettings = registerAs(
   ROCKETS_SETTINGS,
   (): RocketsSettingsInterface => ({
     settings: {},
-    enableGlobalGuard: process.env.ENABLE_GLOBAL_GUARD !== 'false',
   }),
 );
 

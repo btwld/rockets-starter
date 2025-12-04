@@ -2,6 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { ROCKETS_AUTH_SETTINGS } from './config.constants';
 import { RocketsAuthSettingsInterface } from './interfaces/rockets-auth-settings.interface';
 
+
 export const rocketsAuthSettings = registerAs(
   ROCKETS_AUTH_SETTINGS,
   (): RocketsAuthSettingsInterface => ({
@@ -12,7 +13,6 @@ export const rocketsAuthSettings = registerAs(
         sendOtp: {
           fileName: 'send-otp.template.hbs',
           subject: 'Your verification code',
-          logo: process.env.EMAIL_LOGO_URL ?? 'https://example.com/logo.png',
         },
         invitation: {
           logo: process.env.EMAIL_LOGO_URL ?? 'https://example.com/logo.png',
@@ -27,9 +27,8 @@ export const rocketsAuthSettings = registerAs(
       },
     },
     otp: {
-      assignment: 'userOtp' as const,
-      category: 'auth-login' as const,
-      type: 'numeric' as const,
+      assignment: 'userOtp',
+      category: 'auth-login',
       expiresIn: process.env.OTP_EXPIRES_IN ?? '10m',
     },
     role: {

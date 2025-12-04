@@ -37,7 +37,6 @@ export class AppSeeder extends Seeder {
         description: 'Administrator role with full access',
       });
       await roleRepository.save(adminRole);
-      console.log('✅ Admin role created');
     }
 
     // Create default user role
@@ -51,7 +50,6 @@ export class AppSeeder extends Seeder {
         description: 'Default user role',
       });
       await roleRepository.save(userRole);
-      console.log('✅ User role created');
     }
 
     // Check if admin user already exists
@@ -89,11 +87,6 @@ export class AppSeeder extends Seeder {
         lastName: 'User',
       });
       await userMetadataRepository.save(adminMetadata);
-
-      console.log(`✅ Admin user created: ${adminEmail} (password: Test1234)`);
-      console.log(`✅ Admin user metadata created`);
-    } else {
-      console.log('ℹ️  Admin user already exists');
     }
   }
 }

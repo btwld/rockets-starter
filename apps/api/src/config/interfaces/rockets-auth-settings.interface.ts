@@ -1,28 +1,13 @@
-export interface EmailTemplateSettings {
-  fileName: string;
-  subject: string;
-  logo: string;
-}
+import { RocketsAuthSettingsInterface as BaseRocketsAuthSettingsInterface } from '@bitwild/rockets-auth';
 
-export interface RocketsAuthSettingsInterface {
-  email: {
-    from: string;
-    baseUrl: string;
-    templates: {
-      sendOtp: EmailTemplateSettings;
-      invitation: EmailTemplateSettings;
-      invitationAccepted: EmailTemplateSettings;
-    };
-  };
-  otp: {
-    assignment: 'userOtp';
-    category: 'auth-login';
-    type: 'numeric';
-    expiresIn: string;
-  };
-  role: {
-    adminRoleName: string;
-    defaultUserRoleName: string;
-  };
+export interface RocketsAuthSettingsInterface
+  extends Omit<
+    BaseRocketsAuthSettingsInterface,
+    'otp'
+  > {
+  otp: Omit<
+    BaseRocketsAuthSettingsInterface['otp'],
+    'type'
+  >;
 }
 
