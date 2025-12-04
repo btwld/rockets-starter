@@ -24,13 +24,207 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Music Management System API built with NestJS, TypeORM, and Rockets Auth modules.
+
+## Database Setup
+
+This application uses PostgreSQL as its primary database. Follow the steps below to set up your database.
+
+### PostgreSQL Installation
+
+#### macOS (using Homebrew)
+```bash
+brew install postgresql@15
+brew services start postgresql@15
+```
+
+#### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql
+```
+
+#### Windows
+Download and install from [PostgreSQL official website](https://www.postgresql.org/download/windows/)
+
+### Database Configuration
+
+1. Create a PostgreSQL database:
+```bash
+createdb music-management
+```
+
+Or using psql:
+```bash
+psql -U postgres
+CREATE DATABASE music_management;
+```
+
+2. Copy the `.env.example` file to `.env`:
+```bash
+cp .env.example .env
+```
+
+3. Update the `DATABASE_URL` in your `.env` file:
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/music-management
+```
+
+### Migration from SQLite
+
+If you're migrating from the previous SQLite setup:
+
+1. **Backup your SQLite data** (if needed):
+   - The old database file is `database.sqlite`
+   
+2. **Update dependencies**:
+   ```bash
+   yarn install
+   ```
+
+3. **Run the application** with the new PostgreSQL configuration:
+   - The application will automatically synchronize the schema in development mode
+   - For production, ensure `synchronize` is set to `false` in the configuration
+
+### Configuration
+
+The application uses a centralized configuration pattern with environment variables. All configuration files are located in `src/config/`.
+
+#### Setting Up Environment Variables
+
+1. Copy the example environment file:
+   ```bash
+   cp env.example.txt .env
+   ```
+
+2. Update the values in `.env` according to your environment
+
+Key configuration files:
+- `typeorm.settings.ts` - Database configuration
+- `rockets-auth.settings.ts` - Authentication settings
+- `rockets.settings.ts` - Rockets module settings
+- `config.constants.ts` - Configuration key constants
+
+#### Environment Variables
+
+See `env.example.txt` for all available options:
+
+**Database:**
+- `DATABASE_URL` - PostgreSQL connection string
+- `DATABASE_SSL` - Enable SSL for database connection (true/false)
+- `NODE_ENV` - Application environment (development/production)
+
+**Email:**
+- `EMAIL_FROM` - Email sender address
+- `EMAIL_LOGO_URL` - Logo URL for email templates
+
+**Application:**
+- `APP_BASE_URL` - Application base URL
+- `OTP_EXPIRES_IN` - OTP expiration time (e.g., "10m")
+- `ENABLE_GLOBAL_GUARD` - Enable global authentication guard (true/false)
+
+**Roles:**
+- `ADMIN_ROLE_NAME` - Name of admin role (default: "admin")
+- `DEFAULT_ROLE_NAME` - Name of default user role (default: "user")
+
+**Seeding (Development Only):**
+- `USER_MODULE_SEEDER_AMOUNT` - Number of users to create (default: 50, set to 0 for production)
+- `ROLE_MODULE_SEEDER_AMOUNT` - Number of roles to create (default: 50, set to 0 for production)
 
 ## Project setup
 
 ```bash
-$ npm install
+$ yarn install
 ```
+
+## Database Migrations
+
+This project uses TypeORM migrations for database schema management.
+
+### Running Migrations
+
+Initialize the database with migrations and seed data:
+```bash
+yarn sandbox:init
+```
+
+Run pending migrations only:
+```bash
+yarn migration:run
+```
+
+### Creating Migrations
+
+Generate a migration from entity changes:
+```bash
+yarn migration:generate ./src/migrations/MigrationName
+```
+
+Create a blank migration file:
+```bash
+yarn migration:create ./src/migrations/MigrationName
+```
+
+### Other Migration Commands
+
+Show migration status:
+```bash
+yarn migration:show
+```
+
+Revert the last migration:
+```bash
+yarn migration:revert
+```
+
+## Database Seeding
+
+The application includes a seeder (`AppSeeder`) that creates essential data for your application.
+
+### Essential Data Created
+
+The seeder always creates:
+- **Admin Role**: `admin` (Administrator role with full access)
+- **User Role**: `user` (Default user role)
+- **Admin User**: 
+  - Email: `admin@conceptatech.com`
+  - Username: `admin`
+  - Password: `Test1234`
+  - Assigned Role: `admin`
+
+### Seeding Commands
+
+Run the seeder only:
+```bash
+yarn seed:run
+```
+
+Rebuild database (drop schema, run migrations, and seed):
+```bash
+yarn sandbox:rebuild
+```
+
+Initialize database with migrations and seeding:
+```bash
+yarn sandbox:init
+```
+
+### Controlling Seeding Behavior
+
+The seeder uses Concepta's factories which can create additional test data based on environment variables:
+
+```bash
+# In your .env file
+
+# Set to 0 to create only the essential admin user
+USER_MODULE_SEEDER_AMOUNT=0
+
+# Set to 0 to create only admin and user roles
+ROLE_MODULE_SEEDER_AMOUNT=0
+```
+
+**⚠️ Important**: Setting these values to `0` ensures only the essential data is created. If not set, the Concepta seeders will create 50 additional users and 50 additional roles by default (useful for testing, but not for production).
 
 ## Compile and run the project
 

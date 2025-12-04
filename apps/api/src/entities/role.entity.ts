@@ -1,5 +1,5 @@
 import { Entity } from 'typeorm';
-import { RoleSqliteEntity } from '@concepta/nestjs-typeorm-ext';
+import { RolePostgresEntity } from '@concepta/nestjs-typeorm-ext';
 
-@Entity()
-export class RoleEntity extends RoleSqliteEntity {}
+@Entity('role')
+export class RoleEntity extends RolePostgresEntity {}

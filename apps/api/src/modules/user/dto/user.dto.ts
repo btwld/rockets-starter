@@ -4,11 +4,10 @@ import {
   RocketsAuthUserUpdateDto,
 } from '@bitwild/rockets-auth';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UserMetadataDto } from './user-metadata.dto';
 
-@Exclude()
 export class UserDto extends RocketsAuthUserDto {
   @ApiProperty({
     type: UserMetadataDto,

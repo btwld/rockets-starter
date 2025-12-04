@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExtModule } from '@concepta/nestjs-typeorm-ext';
 import { EventModule } from '@concepta/nestjs-event';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import {
   RocketsAuthModule,
   RocketsJwtAuthProvider,
@@ -10,6 +12,9 @@ import {
 import { RocketsModule } from '@bitwild/rockets';
 import { UserAdapter } from './adapters/user.adapter';
 import { UserMetadataAdapter } from './adapters/user-metadata.adapter';
+import { ormSettings } from './config/typeorm.settings';
+import { rocketsAuthSettings } from './config/rockets-auth.settings';
+import { rocketsSettings } from './config/rockets.settings';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -22,7 +27,7 @@ import {
   UserMetadataEntity,
   InvitationEntity,
 } from './entities';
-import { UserCreateDto, UserUpdateDto } from './modules/user/dto/user.dto';
+import { UserCreateDto, UserDto, UserUpdateDto } from './modules/user/dto/user.dto';
 import { EmailSendOptionsInterface } from '@concepta/nestjs-common';
 import {
   UserMetadataCreateDto,
@@ -36,31 +41,32 @@ import { acRules } from './app.acl';
 @Module({
   imports: [
     // Global configuration
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [ormSettings, rocketsAuthSettings, rocketsSettings],
+    }),
+
+    // Throttler Module - Rate limiting for API endpoints
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: 60000, // 60 seconds
+        limit: 10, // Default limit (can be overridden by @Throttle decorator)
+      },
+    ]),
 
     // Event Module - Required for event-driven features
     EventModule.forRoot({}),
 
-    // TypeORM configuration with SQLite
-    TypeOrmExtModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
-      autoLoadEntities: true,
-      synchronize: true, // Only for development - use migrations in production
-      logging: false,
-      entities: [
-        UserEntity,
-        UserOtpEntity,
-        FederatedEntity,
-        RoleEntity,
-        UserRoleEntity,
-        UserMetadataEntity,
-        InvitationEntity,
-      ],
+    // TypeORM configuration with PostgreSQL
+    TypeOrmExtModule.forRootAsync({
+      inject: [ormSettings.KEY],
+      useFactory: async (config: ConfigType<typeof ormSettings>) => config,
     }),
     // Rockets Auth Module - Complete authentication system
     RocketsAuthModule.forRootAsync({
       imports: [
+        ConfigModule,
         TypeOrmModule.forFeature([UserEntity]),
         TypeOrmExtModule.forFeature({
           user: { entity: UserEntity },
@@ -71,8 +77,9 @@ import { acRules } from './app.acl';
           invitation: { entity: InvitationEntity },
         }),
       ],
+      inject: [rocketsAuthSettings.KEY],
       enableGlobalJWTGuard: false,
-      useFactory: () => ({
+      useFactory: (authSettings: ConfigType<typeof rocketsAuthSettings>) => ({
         // Required: Email service (console logger for development)
         services: {
           mailerService: {
@@ -86,43 +93,12 @@ import { acRules } from './app.acl';
           },
         },
 
-        // Email and OTP settings for development
-        settings: {
-          email: {
-            from: 'noreply@music-management.com',
-            baseUrl: 'http://localhost:3001',
-            templates: {
-              sendOtp: {
-                fileName: 'send-otp.template.hbs',
-                subject: 'Your verification code',
-              },
-              invitation: {
-                logo: 'https://example.com/logo.png',
-                fileName: 'invitation.template.hbs',
-                subject: 'You have been invited',
-              },
-              invitationAccepted: {
-                logo: 'https://example.com/logo.png',
-                fileName: 'invitation-accepted.template.hbs',
-                subject: 'Invitation accepted',
-              },
-            },
-          },
-          otp: {
-            assignment: 'userOtp',
-            category: 'auth-login',
-            type: 'numeric',
-            expiresIn: '10m',
-          },
-          role: {
-            adminRoleName: 'admin',
-            defaultUserRoleName: 'user',
-          },
-        },
+        // Email and OTP settings loaded from config
+        settings: authSettings,
       }),
       userCrud: {
         imports: [TypeOrmModule.forFeature([UserEntity, UserMetadataEntity])],
-        model: UserEntity,
+        model: UserDto,
         adapter: UserAdapter,
         dto: {
           createOne: UserCreateDto,
@@ -159,24 +135,35 @@ import { acRules } from './app.acl';
     // MUST be imported AFTER RocketsAuthModule
     RocketsModule.forRootAsync({
       imports: [
+        ConfigModule,
         TypeOrmExtModule.forFeature({
           user: { entity: UserEntity },
           userMetadata: { entity: UserMetadataEntity },
         }),
       ],
-      inject: [RocketsJwtAuthProvider],
-      useFactory: (authProvider: RocketsJwtAuthProvider) => ({
-        settings: {},
+      inject: [RocketsJwtAuthProvider, rocketsSettings.KEY],
+      useFactory: (
+        authProvider: RocketsJwtAuthProvider,
+        rocketSettings: ConfigType<typeof rocketsSettings>,
+      ) => ({
+        settings: rocketSettings.settings,
         authProvider,
         userMetadata: {
           createDto: UserMetadataCreateDto,
           updateDto: UserMetadataUpdateDto,
         },
-        enableGlobalGuard: true,
+        enableGlobalGuard: rocketSettings.enableGlobalGuard,
       }),
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Apply ThrottlerGuard globally
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

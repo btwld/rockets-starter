@@ -1,9 +1,9 @@
 import { Entity } from 'typeorm';
-import { InvitationSqliteEntity } from '@concepta/nestjs-typeorm-ext';
+import { InvitationPostgresEntity } from '@concepta/nestjs-typeorm-ext';
 
 /**
  * Invitation Entity
  */
 @Entity('invitation')
-export class InvitationEntity extends InvitationSqliteEntity {}
+export class InvitationEntity extends InvitationPostgresEntity {}
 
