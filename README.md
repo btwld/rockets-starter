@@ -1,4 +1,4 @@
-# Music Management System
+# Rockets Starter
 
 A full-stack monorepo boilerplate built with Turborepo, featuring NestJS 10 backend and Next.js frontend.
 
