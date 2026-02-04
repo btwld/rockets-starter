@@ -6,4 +6,3 @@ import { InvitationPostgresEntity } from '@concepta/nestjs-typeorm-ext';
  */
 @Entity('invitation')
 export class InvitationEntity extends InvitationPostgresEntity {}
-

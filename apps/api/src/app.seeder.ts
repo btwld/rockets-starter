@@ -1,9 +1,9 @@
 import { Seeder } from '@concepta/typeorm-seeding';
-import { UserEntity } from './entities/user.entity';
-import { RoleEntity } from './entities/role.entity';
-import { UserRoleEntity } from './entities/user-role.entity';
-import { UserMetadataEntity } from './entities/user-metadata.entity';
 import { PasswordStorageService } from '@concepta/nestjs-password';
+import { RoleEntity } from './modules/role/entities/role.entity';
+import { UserRoleEntity } from './modules/role/entities/user-role.entity';
+import { UserEntity } from './modules/user/entities/user.entity';
+import { UserMetadataEntity } from './modules/user/entities/user-metadata.entity';
 
 /**
  * Application Seeder

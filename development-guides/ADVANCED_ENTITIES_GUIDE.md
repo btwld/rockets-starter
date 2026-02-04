@@ -190,13 +190,13 @@ export class UserMetadataEntity extends AuditSqliteEntity {
 ```typescript
 // entities/role.entity.ts
 import { Entity, Column, OneToMany, ManyToMany, JoinTable, Index } from 'typeorm';
-import { RoleSqliteEntity } from '@concepta/nestjs-typeorm-ext';
+import { RolePostgresEntity } from '@concepta/nestjs-typeorm-ext';
 import { UserRoleEntity } from './user-role.entity';
 import { PermissionEntity } from './permission.entity';
 
 @Entity('role')
 @Index(['name', 'active']) // Performance for role lookups
-export class RoleEntity extends RoleSqliteEntity {
+export class RoleEntity extends RolePostgresEntity {
   @Column({ type: 'text', nullable: true })
   description?: string;
 

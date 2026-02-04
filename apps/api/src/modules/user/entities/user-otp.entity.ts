@@ -1,9 +1,10 @@
 import { Entity, ManyToOne } from 'typeorm';
-import { OtpSqliteEntity } from '@concepta/nestjs-typeorm-ext';
+import { ReferenceIdInterface } from '@concepta/nestjs-common';
+import { OtpPostgresEntity } from '@concepta/nestjs-typeorm-ext';
 import { UserEntity } from './user.entity';
 
 @Entity('user_otp')
-export class UserOtpEntity extends OtpSqliteEntity {
+export class UserOtpEntity extends OtpPostgresEntity {
   @ManyToOne(() => UserEntity, (user) => user.userOtps)
-  assignee!: UserEntity;
+  assignee!: ReferenceIdInterface;
 }
