@@ -10,7 +10,7 @@ export class UserMetadataEntity
   implements RocketsAuthUserMetadataEntityInterface
 {
   @Column()
-  id: string;
+  declare id: string;
 
   @Column()
   userId!: string;
