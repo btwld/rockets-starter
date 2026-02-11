@@ -24,7 +24,7 @@
 
 ## Description
 
-Music Management System API built with NestJS, TypeORM, and Rockets Auth modules.
+Rockets Starter API built with NestJS, TypeORM, and Rockets Auth modules.
 
 ## Database Setup
 
@@ -52,13 +52,13 @@ Download and install from [PostgreSQL official website](https://www.postgresql.o
 
 1. Create a PostgreSQL database:
 ```bash
-createdb music-management
+createdb rockets-starter
 ```
 
 Or using psql:
 ```bash
 psql -U postgres
-CREATE DATABASE music_management;
+CREATE DATABASE "rockets-starter";
 ```
 
 2. Copy the `.env.example` file to `.env`:
@@ -68,7 +68,7 @@ cp .env.example .env
 
 3. Update the `DATABASE_URL` in your `.env` file:
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/music-management
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/rockets-starter
 ```
 
 ### Migration from SQLite

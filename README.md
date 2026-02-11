@@ -1,12 +1,15 @@
 # Rockets Starter
 
-A full-stack monorepo boilerplate built with Turborepo, featuring NestJS 10 backend and Next.js frontend.
+A full-stack monorepo boilerplate built with Turborepo, featuring NestJS 11 backend and Next.js frontend.
 
 ## 🚀 Quick Start
 
 ```bash
 # Install dependencies
 yarn install
+
+# Configure environment
+cp apps/api/.env.example apps/api/.env
 
 # Run development servers
 yarn dev
@@ -20,7 +23,7 @@ yarn build
 This monorepo includes the following packages and applications:
 
 ### Applications
-- `api`: NestJS 10 backend server with TypeORM and SQLite (runs on port 3001)
+- `api`: NestJS 11 backend server with TypeORM and PostgreSQL (runs on port 3001)
 - `web`: Next.js frontend application with TypeScript and Tailwind CSS (runs on port 3000)
 
 ### Packages
@@ -30,10 +33,11 @@ This monorepo includes the following packages and applications:
 ## 🏗️ Project Structure
 
 ```
-music-management-system/
+rockets-starter/
 ├── apps/
-│   ├── api/          # NestJS 10 backend
+│   ├── api/          # NestJS backend
 │   └── web/          # Next.js frontend
+├── development-guides/     # README only — guides, skills, agents: btwld/skills
 ├── packages/
 │   ├── typescript-config/  # Shared TypeScript configs
 │   └── eslint-config/      # Shared ESLint configs
@@ -44,6 +48,8 @@ music-management-system/
 ## 🛠️ Available Scripts
 
 - `yarn dev` - Start all applications in development mode
+- `yarn dev:api` - Start only the API
+- `yarn dev:web` - Start only the Web app
 - `yarn build` - Build all applications for production
 - `yarn lint` - Lint all applications
 - `yarn type-check` - Run TypeScript type checking
@@ -52,9 +58,9 @@ music-management-system/
 ## 🔧 Technology Stack
 
 ### Backend (API)
-- **NestJS 10**: Progressive Node.js framework
+- **NestJS 11**: Progressive Node.js framework
 - **TypeORM**: Object-relational mapping
-- **SQLite**: Lightweight database for development
+- **PostgreSQL**: Relational database for development
 - **Swagger**: API documentation
 
 ### Frontend (Web)
@@ -69,12 +75,24 @@ music-management-system/
 - **TypeScript**: Shared type definitions
 - **ESLint**: Code quality
 
+## AI & programmability
+
+For better AI-assisted development (Claude Code, Cursor), we recommend:
+
+| Type | Tool | Purpose |
+|------|------|---------|
+| **MCP** | [Context7](https://context7.com/) | Up-to-date framework docs (NestJS, Next.js, TypeORM) in context |
+| **Plugin** | [Frontend Design](https://claude.com/plugins/frontend-design) | Production-grade UI generation for `apps/web` |
+| **Plugin** | Code Review, GitHub | PR review and repo management (Claude Code marketplace) |
+
+Full setup: see **AI_PLUGINS_AND_MCP.md** in [btwld/skills](https://github.com/btwld/skills). For AI task routing, see [AGENTS.md](AGENTS.md). **Guides, skills, commands and agents** live in [btwld/skills](https://github.com/btwld/skills) — install the plugin or clone and copy; [development-guides/README.md](development-guides/README.md) in this repo has the link and copy instructions.
+
 ## 🚀 Getting Started
 
 1. **Clone and install**
    ```bash
    git clone <repository-url>
-   cd music-management-system
+   cd rockets-starter
    yarn install
    ```
 

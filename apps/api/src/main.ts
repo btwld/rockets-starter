@@ -24,9 +24,9 @@ async function bootstrap() {
   const swaggerUiService = app.get(SwaggerUiService);
   swaggerUiService
     .builder()
-    .setTitle('Music Management System API')
+    .setTitle('Rockets Starter API')
     .setDescription(
-      'API for managing music collections, artists, and playlists with complete authentication',
+      'Rockets SDK starter API with complete authentication and access control',
     )
     .setVersion('1.0')
     .addBearerAuth();

@@ -16,7 +16,7 @@ export const ormSettingsFactory = (): DataSourceOptions => {
     type: 'postgres',
     url:
       process.env.DATABASE_URL ??
-      'postgresql://postgres:postgres@localhost:5432/music-management',
+      'postgresql://postgres:postgres@localhost:5432/rockets-starter',
     entities: [
       UserEntity,
       UserOtpEntity,
