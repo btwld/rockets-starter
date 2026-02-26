@@ -1,6 +1,7 @@
 {
   "name": "web",
   "version": "0.1.0",
+  "description": "Rockets Starter Web — Next.js 16 frontend with TypeScript and Tailwind CSS (App Router).",
   "private": true,
   "scripts": {
     "build": "next build",

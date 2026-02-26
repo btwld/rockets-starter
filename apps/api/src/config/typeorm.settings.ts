@@ -9,7 +9,6 @@ import { RoleEntity } from '../modules/role/entities/role.entity';
 import { UserRoleEntity } from '../modules/role/entities/user-role.entity';
 import { InvitationEntity } from '../modules/invitation/entities/invitation.entity';
 
-
 export const ormSettingsFactory = (): DataSourceOptions => {
   return {
     logging: process.env.NODE_ENV === 'development' ? 'all' : false,

@@ -18,6 +18,7 @@ export class UserDto extends RocketsAuthUserDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => UserMetadataDto)
+  // Explicit undefined initializer required by class-transformer to ensure proper serialization
   userMetadata?: UserMetadataDto = undefined;
 }
 

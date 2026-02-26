@@ -1,6 +1,7 @@
 {
   "name": "eslint-config",
   "version": "1.0.0",
+  "description": "Shared ESLint configs for Rockets Starter monorepo (Next.js and NestJS).",
   "private": true,
   "main": "index.js",
   "files": [

@@ -1,8 +1,8 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Rockets Starter API — NestJS 11 backend with TypeORM, PostgreSQL, Rockets Auth and Concepta (CRUD, access control).",
+  "author": "BTWLD",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -38,8 +38,8 @@
     "sandbox:rebuild": "yarn seed:rebuild"
   },
   "dependencies": {
-    "@bitwild/rockets": "1.0.0-alpha.6",
-    "@bitwild/rockets-auth": "1.0.0-alpha.6",
+    "@bitwild/rockets": "1.0.0-alpha.7",
+    "@bitwild/rockets-auth": "1.0.0-alpha.7",
     "@concepta/nestjs-common": "7.0.0-alpha.10",
     "@concepta/nestjs-event": "7.0.0-alpha.10",
     "@concepta/nestjs-password": "7.0.0-alpha.10",

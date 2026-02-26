@@ -118,16 +118,14 @@ cd apps/web && yarn start
 
 ## 📝 Next Steps
 
-This boilerplate provides a solid foundation for building scalable applications. Consider adding:
+Rockets Starter already includes authentication (Rockets Auth), ACL, and user/role modules. Consider:
 
-- Database configuration for production
-- Authentication & authorization
-- API endpoints for your business logic
-- Frontend components and pages
-- Testing setup (Jest, Cypress)
-- CI/CD pipeline
-- Docker containerization
+- Adding new feature modules (see [AGENTS.md](AGENTS.md) and [btwld/skills](https://github.com/btwld/skills) for guides and generation)
+- Database configuration for production (see `apps/api/README.md`)
+- Frontend pages and components in `apps/web`
+- Tests: `cd apps/api && yarn test` (unit), `yarn test:e2e` (e2e)
+- CI/CD and Docker for your environment
 
 ## 🤝 Contributing
 
-This is a boilerplate project. Feel free to customize it according to your project requirements.
+Customize this baseline for your project. For Rockets SDK patterns and AI tooling, see [btwld/skills](https://github.com/btwld/skills).
