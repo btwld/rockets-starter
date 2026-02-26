@@ -7,7 +7,7 @@ export const rocketsAuthSettings = registerAs(
   ROCKETS_AUTH_SETTINGS,
   (): RocketsAuthSettingsInterface => ({
     email: {
-      from: process.env.EMAIL_FROM ?? 'noreply@music-management.com',
+      from: process.env.EMAIL_FROM ?? 'noreply@rockets-starter.com',
       baseUrl: process.env.APP_BASE_URL ?? 'http://localhost:3001',
       templates: {
         sendOtp: {

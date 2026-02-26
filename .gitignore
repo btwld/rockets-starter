@@ -167,12 +167,16 @@ out/
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# Ignore workspace/tool directories
-.cursor/
+# Ignore workspace/tool directories (but keep rules for AI baseline)
+.cursor/*
+!.cursor/rules/
+.cursor/rules/codacy.mdc
 .codacy/
 
-# Ignore cursor AI rules
-.cursor/rules/codacy.mdc
+# Claude Code (keep rules, ignore the rest)
+.claude/*
+!.claude/rules/
+!.claude/settings.json
 
 # Docker
 .dockerignore

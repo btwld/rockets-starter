@@ -1,48 +1,27 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
-import { BaseUserMetadataEntityInterface } from '@bitwild/rockets';
+import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { ReferenceIdInterface } from '@concepta/nestjs-common';
+import { CommonPostgresEntity } from '@concepta/nestjs-typeorm-ext';
 import { UserEntity } from './user.entity';
+import { RocketsAuthUserMetadataEntityInterface } from '@bitwild/rockets-auth';
 
-@Entity('userMetadata')
-export class UserMetadataEntity implements BaseUserMetadataEntityInterface {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+@Entity('user_metadata')
+export class UserMetadataEntity
+  extends CommonPostgresEntity
+  implements RocketsAuthUserMetadataEntityInterface
+{
+  @Column()
+  declare id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column()
   userId!: string;
 
-  @CreateDateColumn()
-  dateCreated!: Date;
+  @OneToOne(() => UserEntity)
+  @JoinColumn({ name: 'userId' })
+  user!: ReferenceIdInterface;
 
-  @UpdateDateColumn()
-  dateUpdated!: Date;
-
-  @Column({ type: 'datetime', nullable: true })
-  dateDeleted!: Date | null;
-
-  @Column({ type: 'int', default: 1 })
-  version!: number;
-
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ nullable: true })
   firstName?: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ nullable: true })
   lastName?: string;
-
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  username?: string;
-
-  @Column({ type: 'text', nullable: true })
-  bio?: string;
-
-  @OneToOne(() => UserEntity, (user) => user.userMetadata)
-  @JoinColumn({ name: 'userId' })
-  user!: UserEntity;
 }

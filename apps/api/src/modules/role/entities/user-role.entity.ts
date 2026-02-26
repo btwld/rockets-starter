@@ -1,7 +1,7 @@
 import { Entity, ManyToOne } from 'typeorm';
 import { ReferenceIdInterface } from '@concepta/nestjs-common';
 import { RoleAssignmentPostgresEntity } from '@concepta/nestjs-typeorm-ext';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { RoleEntity } from './role.entity';
 
 @Entity('user_role')
